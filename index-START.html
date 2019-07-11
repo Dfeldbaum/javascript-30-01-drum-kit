@@ -58,7 +58,28 @@
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
 <script>
+  function playSound(e) {
+    const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`); // on keydown select audio element based on keydown keycode and play associated audio file
+    const key = document.querySelector(`.key[data-key="${e.keyCode}"]`); // animate div with class .key
+    // console.log(audio)
+    // console.log(key)
+    if(!audio) return; // stop function from running if not audio element
+    audio.currentTime = 0; // rewind to the start
+    audio.play();
+    key.classList.add('playing');
+  }
 
+  //listen for a keyup event
+  window.addEventListener('keydown', playSound);
+
+  function removeTransition(e) {
+    // console.log(e)
+    if(e.propertyName != 'transform') return; // skip it ifs not a transform
+    this.classList.remove('playing');
+  }
+
+  const keys = document.querySelectorAll('.key');
+  keys.forEach(key => key.addEventListener('transitionend', removeTransition)) // each key div gets an event listener of transitionend and when ended, remove via removeTranstion function 
 </script>
 
 
